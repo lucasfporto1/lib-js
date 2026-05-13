@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentação MyLib</title>
+    <title>Documentação - Biblioteca de JavaScript</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -56,6 +56,7 @@
       input[type="text"],
       input[type="password"],
       input[type="email"],
+      input[type=number],
       textarea {
         width: 100%;
         padding: 12px;
@@ -171,7 +172,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Documentação MyLib</h1>
+      <h1>Documentação - Biblioteca de JavaScript</h1>
 
       <section id="theme-section">
         <h2>1. Alternar Tema</h2>
@@ -186,10 +187,14 @@
         <div class="demo-section">
           <h3>Telefone</h3>
           <input type="text" id="phoneInput" placeholder="(00) 00000-0000" />
-          
+
            <h3>Email</h3>
           <input type="email" id="emailInput" placeholder="Digite seu email">
           <div id="emailResult" class="result">Aguardando entrada...</div>
+
+          <h3>Dinheiro</h3>
+          <input type="text" id="moneyInput" placeholder="Digite o valor">
+          <div id="moneyResult" class="result">Aguardando entrada...</div>
         </div>
       </section>
 
@@ -214,15 +219,15 @@
             >
           </p>
           </p>
-<div class="password-wrapper">
-  <input
-    type="password"
-    id="passwordInput"
-    placeholder="Digite uma senha"
-  />
-  <i class="ml-input-icon fas fa-eye"></i>
-</div>
-<div id="passwordResult" class="result">Aguardando entrada...</div>
+          <div class="password-wrapper">
+            <input
+            type="password"
+            id="passwordInput"
+            placeholder="Digite uma senha"
+            />
+            <i class="ml-input-icon fas fa-eye"></i>
+          </div>
+          <div id="passwordResult" class="result">Aguardando entrada...</div>
         </div>
       </section>
 
@@ -309,7 +314,6 @@
           <button id="scrollToThemeBtn">Voltar ao Topo</button>
         </div>
       </section>
-`
       <section id="list-section">
         <h2>8. Todas as Funções</h2>
         <table>
@@ -333,12 +337,28 @@
         document.getElementById("toggleThemeBtn").onclick = MyLib.toggleTheme;
 
         // telefone
-        const phoneInp = document.getElementById("phoneInput");
-        if (phoneInp) {
-          phoneInp.oninput = (e) => {
-            e.target.value = MyLib.maskPhone(e.target.value);
-          };
-        }
+         const phoneInp = document.getElementById("phoneInput");
+         if (phoneInp) {
+          phoneInp.addEventListener("input", (e) => {
+            MyLib.applyInputMask(e, MyLib.maskPhone);
+          });
+}
+        // money
+         const moneyInp = document.getElementById("moneyInput");
+         const moneyRes = document.getElementById("moneyResult");
+         if (moneyInp && moneyRes) {
+          moneyInp.addEventListener("input", (e) => {
+            const valor = e.target.value;
+            if (valor) {
+              moneyRes.textContent = MyLib.formatCurrency(valor);
+            } else {
+              moneyRes.textContent = "Aguardando entrada...";
+            }
+  });
+}
+
+
+
         // email
         const emailInp = document.getElementById("emailInput");
         const emailResult = document.getElementById("emailResult");

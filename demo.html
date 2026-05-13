@@ -55,6 +55,7 @@
       }
       input[type="text"],
       input[type="password"],
+      input[type="email"],
       textarea {
         width: 100%;
         padding: 12px;
@@ -107,18 +108,6 @@
       }
       th:hover {
         background-color: #e9ecef;
-      }
-      .ml-button--success {
-        background-color: #28a745 !important;
-      }
-      .ml-button--primary {
-        background-color: #007bff !important;
-      }
-      .ml-button--neutral {
-        background-color: #6c757d !important;
-      }
-      .ml-button--danger {
-        background-color: #dc3545 !important;
       }
 
       .password-wrapper {
@@ -197,6 +186,10 @@
         <div class="demo-section">
           <h3>Telefone</h3>
           <input type="text" id="phoneInput" placeholder="(00) 00000-0000" />
+          
+           <h3>Email</h3>
+          <input type="email" id="emailInput" placeholder="Digite seu email">
+          <div id="emailResult" class="result">Aguardando entrada...</div>
         </div>
       </section>
 
@@ -344,6 +337,22 @@
         if (phoneInp) {
           phoneInp.oninput = (e) => {
             e.target.value = MyLib.maskPhone(e.target.value);
+          };
+        }
+        // email
+        const emailInp = document.getElementById("emailInput");
+        const emailResult = document.getElementById("emailResult");
+        if (emailInp && emailResult) {
+          emailInp.oninput = (e) => {
+            const valorDigitado = e.target.value;
+            if (valorDigitado.length > 2) {
+             const mascarado = MyLib.maskSensitiveData(valorDigitado, 3, 4);
+             emailResult.textContent = `Dado Protegido: ${mascarado}`;
+             emailResult.style.color = "#0056b3"; 
+             } else {
+              emailResult.textContent = "Aguardando entrada...";
+              emailResult.style.color = "#333";
+            }
           };
         }
 

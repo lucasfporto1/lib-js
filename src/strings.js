@@ -9,8 +9,3 @@ export const slugify = (text) => {
     .replace(/[^a-z0-9 ]/g, "")
     .replace(/\s+/g, "-");
 };
-
-export const capitalizeFirstLetter = (string) => {
-  if (!string) return "";
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};

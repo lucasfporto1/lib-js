@@ -39,33 +39,26 @@ export const isValidCNPJ = (cnpj) => {
   if (!cnpj || typeof cnpj !== "string") return false;
   cnpj = cnpj.replace(/\D/g, "");
   if (cnpj.length !== 14) return false;
-  // CNPJs com todos os dígitos iguais passam na soma mas são inválidos
   if (/^(\d)\1{13}$/.test(cnpj)) return false;
 
-  let size = cnpj.length - 2;
-  let numbers = cnpj.substring(0, size);
-  let digits = cnpj.substring(size);
-  let sum = 0;
-  let pos = size - 7;
+  const validate = (str, weightStart) => {
+    let sum = 0;
+    let pos = weightStart;
+    for (let i = 0; i < str.length; i++) {
+      sum += parseInt(str.charAt(i)) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    const remainder = sum % 11;
+    return remainder < 2 ? 0 : 11 - remainder;
+  };
 
-  for (let i = size; i >= 1; i--) {
-    sum += parseInt(numbers.charAt(i - 1)) * pos--;
-    if (pos < 2) pos = 9;
-  }
-  let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-  if (result !== parseInt(digits.charAt(0))) return false;
+  // Valida o primeiro dígito (peso começa em 5 para os primeiros 12 números)
+  const firstDigit = validate(cnpj.substring(0, 12), 5);
+  if (firstDigit !== parseInt(cnpj.charAt(12))) return false;
 
-  size += 1;
-  numbers = cnpj.substring(0, size);
-  sum = 0;
-  pos = size - 7;
-
-  for (let i = size; i >= 1; i--) {
-    sum += parseInt(numbers.charAt(i - 1)) * pos--;
-    if (pos < 2) pos = 9;
-  }
-  result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-  if (result !== parseInt(digits.charAt(1))) return false;
+  // Valida o segundo dígito (peso começa em 6 para os primeiros 13 números)
+  const secondDigit = validate(cnpj.substring(0, 13), 6);
+  if (secondDigit !== parseInt(cnpj.charAt(13))) return false;
 
   return true;
 };

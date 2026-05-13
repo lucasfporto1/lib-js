@@ -62,43 +62,67 @@ window.MyLib = window.MyLib || {};
       .substring(0, 15);
   };
 
-  window.MyLib.setRequired = (input, isRequired) => {
+  window.MyLib.setRequired = (input, isRequired, options = {}) => {
     if (!input) return;
     input.required = isRequired;
-    const wrapper = input.closest(".div-input");
-    const label = wrapper?.querySelector("label");
+
+    const config = {
+      wrapperSelector: ".div-input",
+      labelSelector: "label",
+      requiredClass: null,
+      ...options,
+    };
+
+    const wrapper = input.closest(config.wrapperSelector);
+    const label = wrapper?.querySelector(config.labelSelector);
+
     if (label) {
       if (isRequired) {
-        label.dataset.required = "true";
+        if (config.requiredClass) {
+          label.classList.add(config.requiredClass);
+        } else {
+          label.dataset.required = "true";
+        }
       } else {
-        delete label.dataset.required;
+        if (config.requiredClass) {
+          label.classList.remove(config.requiredClass);
+        } else {
+          delete label.dataset.required;
+        }
         input.setCustomValidity("");
       }
     }
   };
 
-  window.MyLib.setRequiredMultiple = (fields) => {
-    fields.forEach(({ input, required }) =>
-      window.MyLib.setRequired(input, required),
-    );
-  };
+  window.MyLib.initPasswordToggle = (options = {}) => {
+    const config = {
+      iconSelector: ".ml-input-icon",
+      iconShow: "fa-eye",
+      iconHide: "fa-eye-slash",
+      wrapperSelector: ".div-input",
+      inputSelector: "input",
+      ...options,
+    };
 
-  window.MyLib.initPasswordToggle = () => {
-    document.querySelectorAll(".ml-input-icon").forEach((icon) => {
+    document.querySelectorAll(config.iconSelector).forEach((icon) => {
       icon.addEventListener("click", () => {
-        const input = icon.previousElementSibling;
+        const wrapper = icon.closest(config.wrapperSelector);
+        const input = wrapper
+          ? wrapper.querySelector(config.inputSelector)
+          : null;
+
         if (input && (input.type === "password" || input.type === "text")) {
           if (input.type === "password") {
             input.type = "text";
-            icon.classList.replace("fa-eye", "fa-eye-slash");
+            icon.classList.replace(config.iconShow, config.iconHide);
           } else {
             input.type = "password";
-            icon.classList.replace("fa-eye-slash", "fa-eye");
+            icon.classList.replace(config.iconHide, config.iconShow);
           }
         } else {
           console.warn(
-            "MyLib.initPasswordToggle: elemento anterior ao ícone inválido.",
-            input,
+            "MyLib.initPasswordToggle: input não encontrado dentro do wrapper especificado.",
+            wrapper,
           );
         }
       });
@@ -220,7 +244,7 @@ window.MyLib = window.MyLib || {};
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[@$!%*?&]/.test(password);
+    const hasSpecialChar = /[@$!%*?&#]/.test(password);
     return (
       hasMinLength &&
       hasUpperCase &&
@@ -259,66 +283,27 @@ window.MyLib = window.MyLib || {};
     if (!cnpj || typeof cnpj !== "string") return false;
     cnpj = cnpj.replace(/\D/g, "");
     if (cnpj.length !== 14) return false;
-    // CNPJs com todos os dígitos iguais passam na soma mas são inválidos
     if (/^(\d)\1{13}$/.test(cnpj)) return false;
 
-    let size = cnpj.length - 2;
-    let numbers = cnpj.substring(0, size);
-    let digits = cnpj.substring(size);
-    let sum = 0;
-    let pos = size - 7;
+    const validate = (str, weightStart) => {
+      let sum = 0;
+      let pos = weightStart;
+      for (let i = 0; i < str.length; i++) {
+        sum += parseInt(str.charAt(i)) * pos--;
+        if (pos < 2) pos = 9;
+      }
+      const remainder = sum % 11;
+      return remainder < 2 ? 0 : 11 - remainder;
+    };
 
-    for (let i = size; i >= 1; i--) {
-      sum += parseInt(numbers.charAt(i - 1)) * pos--;
-      if (pos < 2) pos = 9;
-    }
-    let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-    if (result !== parseInt(digits.charAt(0))) return false;
+    // Valida o primeiro dígito (peso começa em 5 para os primeiros 12 números)
+    const firstDigit = validate(cnpj.substring(0, 12), 5);
+    if (firstDigit !== parseInt(cnpj.charAt(12))) return false;
 
-    size += 1;
-    numbers = cnpj.substring(0, size);
-    sum = 0;
-    pos = size - 7;
-
-    for (let i = size; i >= 1; i--) {
-      sum += parseInt(numbers.charAt(i - 1)) * pos--;
-      if (pos < 2) pos = 9;
-    }
-    result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-    if (result !== parseInt(digits.charAt(1))) return false;
+    // Valida o segundo dígito (peso começa em 6 para os primeiros 13 números)
+    const secondDigit = validate(cnpj.substring(0, 13), 6);
+    if (secondDigit !== parseInt(cnpj.charAt(13))) return false;
 
     return true;
-  };
-})();
-
-(function () {
-  const buttonKeywords = {
-    cadastrar: "ml-button--success",
-    registrar: "ml-button--success",
-    criar: "ml-button--success",
-    enviar: "ml-button--primary",
-    salvar: "ml-button--primary",
-    confirmar: "ml-button--primary",
-    cancelar: "ml-button--neutral",
-    voltar: "ml-button--neutral",
-    excluir: "ml-button--danger",
-    deletar: "ml-button--danger",
-    remover: "ml-button--danger",
-  };
-
-  window.MyLib.applyButtonStyle = (button) => {
-    if (!button) return;
-    const text = button.textContent.toLowerCase().trim();
-    for (const keyword in buttonKeywords) {
-      if (text.includes(keyword)) {
-        button.classList.add(buttonKeywords[keyword]);
-        break;
-      }
-    }
-  };
-
-  window.MyLib.applyButtonStyles = (buttons) => {
-    if (!buttons || !buttons.length) return;
-    buttons.forEach(window.MyLib.applyButtonStyle);
   };
 })();

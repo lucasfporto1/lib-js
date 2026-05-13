@@ -35,10 +35,6 @@ export const setRequired = (input, isRequired) => {
   }
 };
 
-export const setRequiredMultiple = (fields) => {
-  fields.forEach(({ input, required }) => setRequired(input, required));
-};
-
 export const initPasswordToggle = () => {
   document.querySelectorAll(".ml-input-icon").forEach((icon) => {
     icon.addEventListener("click", () => {

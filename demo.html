@@ -217,15 +217,19 @@
           <p>
             <small
               >Critérios: 8+ caracteres, maiúscula, minúscula, número e símbolo
-              (@$!%*?&)</small
+              (@$!%*?&#)</small
             >
           </p>
-          <input
-            type="text"
-            id="passwordInput"
-            placeholder="Digite uma senha"
-          />
-          <div id="passwordResult" class="result">Aguardando entrada...</div>
+          </p>
+<div class="password-wrapper">
+  <input
+    type="password"
+    id="passwordInput"
+    placeholder="Digite uma senha"
+  />
+  <i class="ml-input-icon fas fa-eye"></i>
+</div>
+<div id="passwordResult" class="result">Aguardando entrada...</div>
         </div>
       </section>
 
@@ -312,20 +316,9 @@
           <button id="scrollToThemeBtn">Voltar ao Topo</button>
         </div>
       </section>
-
-      <section id="style-section">
-        <h2>8. Estilização Automática</h2>
-        <div class="demo-section">
-          <p>Botões que ganham cores baseadas no texto interno:</p>
-          <button class="auto-style">cadastrar</button>
-          <button class="auto-style">salvar</button>
-          <button class="auto-style">cancelar</button>
-          <button class="auto-style">excluir</button>
-        </div>
-      </section>
-
+`
       <section id="list-section">
-        <h2>9. Todas as Funções</h2>
+        <h2>8. Todas as Funções</h2>
         <table>
           <thead>
             <tr>
@@ -379,9 +372,9 @@
           el.textContent = res ? "✅ Senha Forte!" : "❌ Senha Fraca!";
           el.style.color = res ? "#28a745" : "#dc3545";
         };
-
-        MyLib.initPasswordToggle();
-
+        MyLib.initPasswordToggle({ 
+          wrapperSelector: ".password-wrapper" 
+        });
         // filtro de lista
         const listSearchInput = document.getElementById("listSearchInput");
         const myFilterableList = document.getElementById("myFilterableList");
@@ -417,11 +410,6 @@
           document.getElementById("autoResizeTextarea");
         if (autoResizeTextarea) MyLib.initAutoResize(autoResizeTextarea);
 
-        // botões
-        document
-          .querySelectorAll(".auto-style")
-          .forEach((btn) => MyLib.applyButtonStyle(btn));
-
         // tabela de funções
         const funcs = [
           {
@@ -449,16 +437,8 @@
             d: "Define um campo como obrigatório e adiciona um indicador visual.",
           },
           {
-            n: "setRequiredMultiple(fields)",
-            d: "Aplica required em múltiplos campos de uma vez.",
-          },
-          {
             n: "slugify(text)",
             d: "Converte uma string em slug amigável para URLs.",
-          },
-          {
-            n: "capitalizeFirstLetter(string)",
-            d: "Capitaliza a primeira letra de uma string.",
           },
           { n: "toggleTheme()", d: "Alterna entre o tema claro e escuro." },
           {
@@ -490,14 +470,6 @@
           {
             n: "sortTable(table, columnIndex, isAscending)",
             d: "Ordena uma tabela HTML pelo cabeçalho clicado.",
-          },
-          {
-            n: "applyButtonStyle(button)",
-            d: "Aplica classe de cor a um botão com base no texto.",
-          },
-          {
-            n: "applyButtonStyles(buttons)",
-            d: "Aplica estilos em múltiplos botões.",
           },
         ];
 

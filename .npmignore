@@ -1,0 +1,8 @@
+demo.html
+myLibrary.js
+.env
+.vscode/
+node_modules/
+npm-debug.log*
+*.test.js
+*.spec.js

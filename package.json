@@ -1,0 +1,21 @@
+{
+  "name": "js-lib",
+  "version": "1.0.0",
+  "description": "Biblioteca de utilitários JavaScript para o projeto final de estágio.",
+  "main": "myLibrary.js",
+  "scripts": {
+    "test": "echo \"Erro: nenhum teste especificado\" && exit 1"
+  },
+  "keywords": [
+    "vanilla-js",
+    "utilitarios",
+    "validacao",
+    "estagio"
+  ],
+  "author": "Lucas Porto",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasfporto1/js-lib.git"
+  }
+}

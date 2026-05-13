@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentação MyLib</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+        color: #333;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      .container {
+        max-width: 900px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        color: #0056b3;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h2 {
+        color: #007bff;
+        border-left: 5px solid #007bff;
+        padding-left: 15px;
+        margin-top: 40px;
+      }
+      h3 {
+        color: #555;
+        margin-top: 25px;
+      }
+      section {
+        margin-bottom: 50px;
+      }
+      .demo-section {
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 8px;
+        border: 1px solid #e1e4e8;
+        margin-top: 15px;
+      }
+      input[type="text"],
+      input[type="password"],
+      textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f1f3f5;
+        border-radius: 6px;
+        font-weight: bold;
+        min-height: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+        background: white;
+      }
+      th,
+      td {
+        border: 1px solid #dee2e6;
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #f8f9fa;
+        color: #495057;
+        cursor: pointer;
+      }
+      th:hover {
+        background-color: #e9ecef;
+      }
+      .ml-button--success {
+        background-color: #28a745 !important;
+      }
+      .ml-button--primary {
+        background-color: #007bff !important;
+      }
+      .ml-button--neutral {
+        background-color: #6c757d !important;
+      }
+      .ml-button--danger {
+        background-color: #dc3545 !important;
+      }
+
+      .password-wrapper {
+        position: relative;
+        width: 100%;
+      }
+      .password-wrapper input {
+        padding-right: 40px; /* espaço pro ícone */
+      }
+      .ml-input-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+      }
+
+      [data-theme="dark"] {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+      }
+      [data-theme="dark"] .container {
+        background: #2d2d2d;
+        color: #e0e0e0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] h1,
+      [data-theme="dark"] h2 {
+        color: #4dabf7;
+      }
+      [data-theme="dark"] h3 {
+        color: #adb5bd;
+      }
+      [data-theme="dark"] .demo-section {
+        background-color: #383838;
+        border-color: #444;
+      }
+      [data-theme="dark"] input,
+      [data-theme="dark"] textarea {
+        background-color: #444;
+        border-color: #555;
+        color: #fff;
+      }
+      [data-theme="dark"] .result {
+        background-color: #444;
+        color: #fff;
+      }
+      [data-theme="dark"] th {
+        background-color: #383838;
+        color: #dee2e6;
+        border-color: #444;
+      }
+      [data-theme="dark"] td {
+        border-color: #444;
+      }
+      [data-theme="dark"] .ml-input-icon {
+        color: #adb5bd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Documentação MyLib</h1>
+
+      <section id="theme-section">
+        <h2>1. Alternar Tema</h2>
+        <div class="demo-section">
+          <p>Teste o sistema de temas persistentes.</p>
+          <button id="toggleThemeBtn">Trocar para Claro/Escuro</button>
+        </div>
+      </section>
+
+      <section id="mask-section">
+        <h2>2. Máscaras em Tempo Real</h2>
+        <div class="demo-section">
+          <h3>Telefone</h3>
+          <input type="text" id="phoneInput" placeholder="(00) 00000-0000" />
+        </div>
+      </section>
+
+      <section id="validation-section">
+        <h2>3. Validadores</h2>
+        <div class="demo-section">
+          <h3>CPF</h3>
+          <input type="text" id="cpfInput" placeholder="Digite o CPF" />
+          <button id="validateCpfBtn">Validar CPF</button>
+          <div id="cpfResult" class="result">Aguardando entrada...</div>
+
+          <h3>CNPJ</h3>
+          <input type="text" id="cnpjInput" placeholder="Digite o CNPJ" />
+          <button id="validateCnpjBtn">Validar CNPJ</button>
+          <div id="cnpjResult" class="result">Aguardando entrada...</div>
+
+          <h3>Senha Forte</h3>
+          <p>
+            <small
+              >Critérios: 8+ caracteres, maiúscula, minúscula, número e símbolo
+              (@$!%*?&)</small
+            >
+          </p>
+          <input
+            type="text"
+            id="passwordInput"
+            placeholder="Digite uma senha"
+          />
+          <div id="passwordResult" class="result">Aguardando entrada...</div>
+        </div>
+      </section>
+
+      <section id="password-toggle-section">
+        <h2>4. Toggle de Senha</h2>
+        <div class="demo-section">
+          <p>Clique no ícone para mostrar/esconder a senha.</p>
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="myPasswordInput"
+              placeholder="Sua senha aqui"
+            />
+            <i class="ml-input-icon fas fa-eye"></i>
+          </div>
+        </div>
+      </section>
+
+      <section id="list-filter-section">
+        <h2>5. Busca em Listas</h2>
+        <div class="demo-section">
+          <input
+            type="text"
+            id="listSearchInput"
+            placeholder="Buscar na lista..."
+          />
+          <ul id="myFilterableList" style="list-style: none; padding: 0">
+            <li class="list-item">Item A: Maçã</li>
+            <li class="list-item">Item B: Banana</li>
+            <li class="list-item">Item C: Laranja</li>
+            <li class="list-item">Item D: Abacaxi</li>
+            <li class="list-item">Item E: Morango</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="table-sort-section">
+        <h2>6. Ordenador de Tabelas</h2>
+        <div class="demo-section">
+          <p>Clique nos cabeçalhos para ordenar.</p>
+          <table id="mySortableTable">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Cidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Carlos</td>
+                <td>30</td>
+                <td>São Paulo</td>
+              </tr>
+              <tr>
+                <td>Ana</td>
+                <td>25</td>
+                <td>Rio de Janeiro</td>
+              </tr>
+              <tr>
+                <td>Bruno</td>
+                <td>35</td>
+                <td>Belo Horizonte</td>
+              </tr>
+              <tr>
+                <td>Daniela</td>
+                <td>28</td>
+                <td>Curitiba</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="util-section-2">
+        <h2>7. Outros Utilitários de UI</h2>
+        <div class="demo-section">
+          <h3>Textarea Auto-expansível</h3>
+          <textarea
+            id="autoResizeTextarea"
+            placeholder="Escreva várias linhas aqui..."
+          ></textarea>
+          <h3>Scroll Suave</h3>
+          <button id="scrollToThemeBtn">Voltar ao Topo</button>
+        </div>
+      </section>
+
+      <section id="style-section">
+        <h2>8. Estilização Automática</h2>
+        <div class="demo-section">
+          <p>Botões que ganham cores baseadas no texto interno:</p>
+          <button class="auto-style">cadastrar</button>
+          <button class="auto-style">salvar</button>
+          <button class="auto-style">cancelar</button>
+          <button class="auto-style">excluir</button>
+        </div>
+      </section>
+
+      <section id="list-section">
+        <h2>9. Todas as Funções</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Função</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody id="functionTable"></tbody>
+        </table>
+      </section>
+    </div>
+
+    <script src="myLibrary.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        MyLib.initTheme();
+
+        // tema
+        document.getElementById("toggleThemeBtn").onclick = MyLib.toggleTheme;
+
+        // telefone
+        const phoneInp = document.getElementById("phoneInput");
+        if (phoneInp) {
+          phoneInp.oninput = (e) => {
+            e.target.value = MyLib.maskPhone(e.target.value);
+          };
+        }
+
+        // cpf
+        document.getElementById("validateCpfBtn").onclick = () => {
+          const val = document.getElementById("cpfInput").value;
+          const res = MyLib.isValidCPF(val);
+          const el = document.getElementById("cpfResult");
+          el.textContent = res ? "✅ CPF Válido!" : "❌ CPF Inválido!";
+          el.style.color = res ? "#28a745" : "#dc3545";
+        };
+
+        // cnpj
+        document.getElementById("validateCnpjBtn").onclick = () => {
+          const val = document.getElementById("cnpjInput").value;
+          const res = MyLib.isValidCNPJ(val);
+          const el = document.getElementById("cnpjResult");
+          el.textContent = res ? "✅ CNPJ Válido!" : "❌ CNPJ Inválido!";
+          el.style.color = res ? "#28a745" : "#dc3545";
+        };
+
+        // senha
+        document.getElementById("passwordInput").oninput = (e) => {
+          const res = MyLib.isStrongPassword(e.target.value);
+          const el = document.getElementById("passwordResult");
+          el.textContent = res ? "✅ Senha Forte!" : "❌ Senha Fraca!";
+          el.style.color = res ? "#28a745" : "#dc3545";
+        };
+
+        MyLib.initPasswordToggle();
+
+        // filtro de lista
+        const listSearchInput = document.getElementById("listSearchInput");
+        const myFilterableList = document.getElementById("myFilterableList");
+        if (listSearchInput && myFilterableList) {
+          listSearchInput.addEventListener("input", (e) => {
+            MyLib.filterList(myFilterableList, e.target.value, ".list-item");
+          });
+        }
+
+        // sort de tabela
+        const mySortableTable = document.getElementById("mySortableTable");
+        if (mySortableTable) {
+          let sortDirections = {};
+          mySortableTable.querySelectorAll("th").forEach((header, index) => {
+            header.addEventListener("click", () => {
+              const currentDirection =
+                sortDirections[index] === undefined
+                  ? true
+                  : !sortDirections[index];
+              MyLib.sortTable(mySortableTable, index, currentDirection);
+              sortDirections[index] = currentDirection;
+            });
+          });
+        }
+
+        // scroll
+        document.getElementById("scrollToThemeBtn").onclick = () => {
+          MyLib.scrollToElement("theme-section");
+        };
+
+        // auto resize
+        const autoResizeTextarea =
+          document.getElementById("autoResizeTextarea");
+        if (autoResizeTextarea) MyLib.initAutoResize(autoResizeTextarea);
+
+        // botões
+        document
+          .querySelectorAll(".auto-style")
+          .forEach((btn) => MyLib.applyButtonStyle(btn));
+
+        // tabela de funções
+        const funcs = [
+          {
+            n: "initClickOutsideObserver()",
+            d: "Monitora cliques fora de elementos com data-click-outside e dispara um CustomEvent.",
+          },
+          {
+            n: "formatCurrency(value, locale, currency)",
+            d: "Formata um número para moeda local (ex: R$ 1.000,00).",
+          },
+          {
+            n: "maskSensitiveData(str, visibleStart, visibleEnd)",
+            d: "Esconde partes de um texto sensível (ex: j*******o@email.com).",
+          },
+          {
+            n: "applyInputMask(event, formatterFunction)",
+            d: "Gerencia a posição do cursor ao aplicar máscaras em inputs.",
+          },
+          {
+            n: "maskPhone(value)",
+            d: "Aplica a máscara de telefone brasileiro (XX) XXXXX-XXXX.",
+          },
+          {
+            n: "setRequired(input, isRequired)",
+            d: "Define um campo como obrigatório e adiciona um indicador visual.",
+          },
+          {
+            n: "setRequiredMultiple(fields)",
+            d: "Aplica required em múltiplos campos de uma vez.",
+          },
+          {
+            n: "slugify(text)",
+            d: "Converte uma string em slug amigável para URLs.",
+          },
+          {
+            n: "capitalizeFirstLetter(string)",
+            d: "Capitaliza a primeira letra de uma string.",
+          },
+          { n: "toggleTheme()", d: "Alterna entre o tema claro e escuro." },
+          {
+            n: "initTheme()",
+            d: "Inicializa o tema com base nas preferências salvas ou do sistema.",
+          },
+          {
+            n: "initAutoResize(textarea)",
+            d: "Faz o textarea expandir conforme o conteúdo.",
+          },
+          {
+            n: "isStrongPassword(password)",
+            d: "Verifica se a senha atende aos critérios de força.",
+          },
+          { n: "isValidCPF(cpf)", d: "Valida um número de CPF." },
+          { n: "isValidCNPJ(cnpj)", d: "Valida um número de CNPJ." },
+          {
+            n: "scrollToElement(elementId)",
+            d: "Rola suavemente até um elemento pelo ID.",
+          },
+          {
+            n: "initPasswordToggle()",
+            d: "Inicializa o toggle de mostrar/esconder senha.",
+          },
+          {
+            n: "filterList(listElement, searchTerm, itemSelector)",
+            d: "Filtra itens de uma lista pelo texto digitado.",
+          },
+          {
+            n: "sortTable(table, columnIndex, isAscending)",
+            d: "Ordena uma tabela HTML pelo cabeçalho clicado.",
+          },
+          {
+            n: "applyButtonStyle(button)",
+            d: "Aplica classe de cor a um botão com base no texto.",
+          },
+          {
+            n: "applyButtonStyles(buttons)",
+            d: "Aplica estilos em múltiplos botões.",
+          },
+        ];
+
+        const tbody = document.getElementById("functionTable");
+        funcs.forEach((f) => {
+          tbody.innerHTML += `<tr><td><code>${f.n}</code></td><td>${f.d}</td></tr>`;
+        });
+      });
+    </script>
+  </body>
+</html>
